@@ -21,16 +21,17 @@ typedef struct __mavlink_ef_guidance_state_t {
  float ref_vel_y; /*< ref ned velocity.*/
  float ref_vel_z; /*< ref enu velocity.*/
  float ref_acc_z; /*< ref enu acceleration.*/
+ float ref_yaw; /*< ref yaw.*/
  float thrust; /*< thrust output.*/
 }) mavlink_ef_guidance_state_t;
 
-#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN 68
-#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN 68
-#define MAVLINK_MSG_ID_12000_LEN 68
-#define MAVLINK_MSG_ID_12000_MIN_LEN 68
+#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN 72
+#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN 72
+#define MAVLINK_MSG_ID_12000_LEN 72
+#define MAVLINK_MSG_ID_12000_MIN_LEN 72
 
-#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC 197
-#define MAVLINK_MSG_ID_12000_CRC 197
+#define MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC 56
+#define MAVLINK_MSG_ID_12000_CRC 56
 
 
 
@@ -38,7 +39,7 @@ typedef struct __mavlink_ef_guidance_state_t {
 #define MAVLINK_MESSAGE_INFO_EF_GUIDANCE_STATE { \
     12000, \
     "EF_GUIDANCE_STATE", \
-    17, \
+    18, \
     {  { "ned_pos_x", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_ef_guidance_state_t, ned_pos_x) }, \
          { "ned_pos_y", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_ef_guidance_state_t, ned_pos_y) }, \
          { "enu_pos_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_ef_guidance_state_t, enu_pos_z) }, \
@@ -55,13 +56,14 @@ typedef struct __mavlink_ef_guidance_state_t {
          { "ref_vel_y", NULL, MAVLINK_TYPE_FLOAT, 0, 52, offsetof(mavlink_ef_guidance_state_t, ref_vel_y) }, \
          { "ref_vel_z", NULL, MAVLINK_TYPE_FLOAT, 0, 56, offsetof(mavlink_ef_guidance_state_t, ref_vel_z) }, \
          { "ref_acc_z", NULL, MAVLINK_TYPE_FLOAT, 0, 60, offsetof(mavlink_ef_guidance_state_t, ref_acc_z) }, \
-         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 0, 64, offsetof(mavlink_ef_guidance_state_t, thrust) }, \
+         { "ref_yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 64, offsetof(mavlink_ef_guidance_state_t, ref_yaw) }, \
+         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 0, 68, offsetof(mavlink_ef_guidance_state_t, thrust) }, \
          } \
 }
 #else
 #define MAVLINK_MESSAGE_INFO_EF_GUIDANCE_STATE { \
     "EF_GUIDANCE_STATE", \
-    17, \
+    18, \
     {  { "ned_pos_x", NULL, MAVLINK_TYPE_FLOAT, 0, 0, offsetof(mavlink_ef_guidance_state_t, ned_pos_x) }, \
          { "ned_pos_y", NULL, MAVLINK_TYPE_FLOAT, 0, 4, offsetof(mavlink_ef_guidance_state_t, ned_pos_y) }, \
          { "enu_pos_z", NULL, MAVLINK_TYPE_FLOAT, 0, 8, offsetof(mavlink_ef_guidance_state_t, enu_pos_z) }, \
@@ -78,7 +80,8 @@ typedef struct __mavlink_ef_guidance_state_t {
          { "ref_vel_y", NULL, MAVLINK_TYPE_FLOAT, 0, 52, offsetof(mavlink_ef_guidance_state_t, ref_vel_y) }, \
          { "ref_vel_z", NULL, MAVLINK_TYPE_FLOAT, 0, 56, offsetof(mavlink_ef_guidance_state_t, ref_vel_z) }, \
          { "ref_acc_z", NULL, MAVLINK_TYPE_FLOAT, 0, 60, offsetof(mavlink_ef_guidance_state_t, ref_acc_z) }, \
-         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 0, 64, offsetof(mavlink_ef_guidance_state_t, thrust) }, \
+         { "ref_yaw", NULL, MAVLINK_TYPE_FLOAT, 0, 64, offsetof(mavlink_ef_guidance_state_t, ref_yaw) }, \
+         { "thrust", NULL, MAVLINK_TYPE_FLOAT, 0, 68, offsetof(mavlink_ef_guidance_state_t, thrust) }, \
          } \
 }
 #endif
@@ -105,11 +108,12 @@ typedef struct __mavlink_ef_guidance_state_t {
  * @param ref_vel_y ref ned velocity.
  * @param ref_vel_z ref enu velocity.
  * @param ref_acc_z ref enu acceleration.
+ * @param ref_yaw ref yaw.
  * @param thrust thrust output.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_ef_guidance_state_pack(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg,
-                               float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float thrust)
+                               float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float ref_yaw, float thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN];
@@ -129,7 +133,8 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack(uint8_t system_id, uin
     _mav_put_float(buf, 52, ref_vel_y);
     _mav_put_float(buf, 56, ref_vel_z);
     _mav_put_float(buf, 60, ref_acc_z);
-    _mav_put_float(buf, 64, thrust);
+    _mav_put_float(buf, 64, ref_yaw);
+    _mav_put_float(buf, 68, thrust);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN);
 #else
@@ -150,6 +155,7 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack(uint8_t system_id, uin
     packet.ref_vel_y = ref_vel_y;
     packet.ref_vel_z = ref_vel_z;
     packet.ref_acc_z = ref_acc_z;
+    packet.ref_yaw = ref_yaw;
     packet.thrust = thrust;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN);
@@ -181,12 +187,13 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack(uint8_t system_id, uin
  * @param ref_vel_y ref ned velocity.
  * @param ref_vel_z ref enu velocity.
  * @param ref_acc_z ref enu acceleration.
+ * @param ref_yaw ref yaw.
  * @param thrust thrust output.
  * @return length of the message in bytes (excluding serial stream start sign)
  */
 static inline uint16_t mavlink_msg_ef_guidance_state_pack_chan(uint8_t system_id, uint8_t component_id, uint8_t chan,
                                mavlink_message_t* msg,
-                                   float ned_pos_x,float ned_pos_y,float enu_pos_z,float ned_vel_x,float ned_vel_y,float enu_vel_z,float ned_acc_x,float ned_acc_y,float enu_acc_z,float ref_pos_x,float ref_pos_y,float ref_pos_z,float ref_vel_x,float ref_vel_y,float ref_vel_z,float ref_acc_z,float thrust)
+                                   float ned_pos_x,float ned_pos_y,float enu_pos_z,float ned_vel_x,float ned_vel_y,float enu_vel_z,float ned_acc_x,float ned_acc_y,float enu_acc_z,float ref_pos_x,float ref_pos_y,float ref_pos_z,float ref_vel_x,float ref_vel_y,float ref_vel_z,float ref_acc_z,float ref_yaw,float thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN];
@@ -206,7 +213,8 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack_chan(uint8_t system_id
     _mav_put_float(buf, 52, ref_vel_y);
     _mav_put_float(buf, 56, ref_vel_z);
     _mav_put_float(buf, 60, ref_acc_z);
-    _mav_put_float(buf, 64, thrust);
+    _mav_put_float(buf, 64, ref_yaw);
+    _mav_put_float(buf, 68, thrust);
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), buf, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN);
 #else
@@ -227,6 +235,7 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack_chan(uint8_t system_id
     packet.ref_vel_y = ref_vel_y;
     packet.ref_vel_z = ref_vel_z;
     packet.ref_acc_z = ref_acc_z;
+    packet.ref_yaw = ref_yaw;
     packet.thrust = thrust;
 
         memcpy(_MAV_PAYLOAD_NON_CONST(msg), &packet, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN);
@@ -246,7 +255,7 @@ static inline uint16_t mavlink_msg_ef_guidance_state_pack_chan(uint8_t system_id
  */
 static inline uint16_t mavlink_msg_ef_guidance_state_encode(uint8_t system_id, uint8_t component_id, mavlink_message_t* msg, const mavlink_ef_guidance_state_t* ef_guidance_state)
 {
-    return mavlink_msg_ef_guidance_state_pack(system_id, component_id, msg, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->thrust);
+    return mavlink_msg_ef_guidance_state_pack(system_id, component_id, msg, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->ref_yaw, ef_guidance_state->thrust);
 }
 
 /**
@@ -260,7 +269,7 @@ static inline uint16_t mavlink_msg_ef_guidance_state_encode(uint8_t system_id, u
  */
 static inline uint16_t mavlink_msg_ef_guidance_state_encode_chan(uint8_t system_id, uint8_t component_id, uint8_t chan, mavlink_message_t* msg, const mavlink_ef_guidance_state_t* ef_guidance_state)
 {
-    return mavlink_msg_ef_guidance_state_pack_chan(system_id, component_id, chan, msg, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->thrust);
+    return mavlink_msg_ef_guidance_state_pack_chan(system_id, component_id, chan, msg, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->ref_yaw, ef_guidance_state->thrust);
 }
 
 /**
@@ -283,11 +292,12 @@ static inline uint16_t mavlink_msg_ef_guidance_state_encode_chan(uint8_t system_
  * @param ref_vel_y ref ned velocity.
  * @param ref_vel_z ref enu velocity.
  * @param ref_acc_z ref enu acceleration.
+ * @param ref_yaw ref yaw.
  * @param thrust thrust output.
  */
 #ifdef MAVLINK_USE_CONVENIENCE_FUNCTIONS
 
-static inline void mavlink_msg_ef_guidance_state_send(mavlink_channel_t chan, float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float thrust)
+static inline void mavlink_msg_ef_guidance_state_send(mavlink_channel_t chan, float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float ref_yaw, float thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char buf[MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN];
@@ -307,7 +317,8 @@ static inline void mavlink_msg_ef_guidance_state_send(mavlink_channel_t chan, fl
     _mav_put_float(buf, 52, ref_vel_y);
     _mav_put_float(buf, 56, ref_vel_z);
     _mav_put_float(buf, 60, ref_acc_z);
-    _mav_put_float(buf, 64, thrust);
+    _mav_put_float(buf, 64, ref_yaw);
+    _mav_put_float(buf, 68, thrust);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_EF_GUIDANCE_STATE, buf, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC);
 #else
@@ -328,6 +339,7 @@ static inline void mavlink_msg_ef_guidance_state_send(mavlink_channel_t chan, fl
     packet.ref_vel_y = ref_vel_y;
     packet.ref_vel_z = ref_vel_z;
     packet.ref_acc_z = ref_acc_z;
+    packet.ref_yaw = ref_yaw;
     packet.thrust = thrust;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_EF_GUIDANCE_STATE, (const char *)&packet, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC);
@@ -342,7 +354,7 @@ static inline void mavlink_msg_ef_guidance_state_send(mavlink_channel_t chan, fl
 static inline void mavlink_msg_ef_guidance_state_send_struct(mavlink_channel_t chan, const mavlink_ef_guidance_state_t* ef_guidance_state)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
-    mavlink_msg_ef_guidance_state_send(chan, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->thrust);
+    mavlink_msg_ef_guidance_state_send(chan, ef_guidance_state->ned_pos_x, ef_guidance_state->ned_pos_y, ef_guidance_state->enu_pos_z, ef_guidance_state->ned_vel_x, ef_guidance_state->ned_vel_y, ef_guidance_state->enu_vel_z, ef_guidance_state->ned_acc_x, ef_guidance_state->ned_acc_y, ef_guidance_state->enu_acc_z, ef_guidance_state->ref_pos_x, ef_guidance_state->ref_pos_y, ef_guidance_state->ref_pos_z, ef_guidance_state->ref_vel_x, ef_guidance_state->ref_vel_y, ef_guidance_state->ref_vel_z, ef_guidance_state->ref_acc_z, ef_guidance_state->ref_yaw, ef_guidance_state->thrust);
 #else
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_EF_GUIDANCE_STATE, (const char *)ef_guidance_state, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC);
 #endif
@@ -356,7 +368,7 @@ static inline void mavlink_msg_ef_guidance_state_send_struct(mavlink_channel_t c
   is usually the receive buffer for the channel, and allows a reply to an
   incoming message with minimum stack space usage.
  */
-static inline void mavlink_msg_ef_guidance_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float thrust)
+static inline void mavlink_msg_ef_guidance_state_send_buf(mavlink_message_t *msgbuf, mavlink_channel_t chan,  float ned_pos_x, float ned_pos_y, float enu_pos_z, float ned_vel_x, float ned_vel_y, float enu_vel_z, float ned_acc_x, float ned_acc_y, float enu_acc_z, float ref_pos_x, float ref_pos_y, float ref_pos_z, float ref_vel_x, float ref_vel_y, float ref_vel_z, float ref_acc_z, float ref_yaw, float thrust)
 {
 #if MAVLINK_NEED_BYTE_SWAP || !MAVLINK_ALIGNED_FIELDS
     char *buf = (char *)msgbuf;
@@ -376,7 +388,8 @@ static inline void mavlink_msg_ef_guidance_state_send_buf(mavlink_message_t *msg
     _mav_put_float(buf, 52, ref_vel_y);
     _mav_put_float(buf, 56, ref_vel_z);
     _mav_put_float(buf, 60, ref_acc_z);
-    _mav_put_float(buf, 64, thrust);
+    _mav_put_float(buf, 64, ref_yaw);
+    _mav_put_float(buf, 68, thrust);
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_EF_GUIDANCE_STATE, buf, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC);
 #else
@@ -397,6 +410,7 @@ static inline void mavlink_msg_ef_guidance_state_send_buf(mavlink_message_t *msg
     packet->ref_vel_y = ref_vel_y;
     packet->ref_vel_z = ref_vel_z;
     packet->ref_acc_z = ref_acc_z;
+    packet->ref_yaw = ref_yaw;
     packet->thrust = thrust;
 
     _mav_finalize_message_chan_send(chan, MAVLINK_MSG_ID_EF_GUIDANCE_STATE, (const char *)packet, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_MIN_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN, MAVLINK_MSG_ID_EF_GUIDANCE_STATE_CRC);
@@ -570,13 +584,23 @@ static inline float mavlink_msg_ef_guidance_state_get_ref_acc_z(const mavlink_me
 }
 
 /**
+ * @brief Get field ref_yaw from ef_guidance_state message
+ *
+ * @return ref yaw.
+ */
+static inline float mavlink_msg_ef_guidance_state_get_ref_yaw(const mavlink_message_t* msg)
+{
+    return _MAV_RETURN_float(msg,  64);
+}
+
+/**
  * @brief Get field thrust from ef_guidance_state message
  *
  * @return thrust output.
  */
 static inline float mavlink_msg_ef_guidance_state_get_thrust(const mavlink_message_t* msg)
 {
-    return _MAV_RETURN_float(msg,  64);
+    return _MAV_RETURN_float(msg,  68);
 }
 
 /**
@@ -604,6 +628,7 @@ static inline void mavlink_msg_ef_guidance_state_decode(const mavlink_message_t*
     ef_guidance_state->ref_vel_y = mavlink_msg_ef_guidance_state_get_ref_vel_y(msg);
     ef_guidance_state->ref_vel_z = mavlink_msg_ef_guidance_state_get_ref_vel_z(msg);
     ef_guidance_state->ref_acc_z = mavlink_msg_ef_guidance_state_get_ref_acc_z(msg);
+    ef_guidance_state->ref_yaw = mavlink_msg_ef_guidance_state_get_ref_yaw(msg);
     ef_guidance_state->thrust = mavlink_msg_ef_guidance_state_get_thrust(msg);
 #else
         uint8_t len = msg->len < MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN? msg->len : MAVLINK_MSG_ID_EF_GUIDANCE_STATE_LEN;

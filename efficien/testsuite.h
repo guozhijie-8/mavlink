@@ -40,7 +40,7 @@ static void mavlink_test_ef_guidance_state(uint8_t system_id, uint8_t component_
         uint8_t buffer[MAVLINK_MAX_PACKET_LEN];
         uint16_t i;
     mavlink_ef_guidance_state_t packet_in = {
-        17.0,45.0,73.0,101.0,129.0,157.0,185.0,213.0,241.0,269.0,297.0,325.0,353.0,381.0,409.0,437.0,465.0
+        17.0,45.0,73.0,101.0,129.0,157.0,185.0,213.0,241.0,269.0,297.0,325.0,353.0,381.0,409.0,437.0,465.0,493.0
     };
     mavlink_ef_guidance_state_t packet1, packet2;
         memset(&packet1, 0, sizeof(packet1));
@@ -60,6 +60,7 @@ static void mavlink_test_ef_guidance_state(uint8_t system_id, uint8_t component_
         packet1.ref_vel_y = packet_in.ref_vel_y;
         packet1.ref_vel_z = packet_in.ref_vel_z;
         packet1.ref_acc_z = packet_in.ref_acc_z;
+        packet1.ref_yaw = packet_in.ref_yaw;
         packet1.thrust = packet_in.thrust;
         
         
@@ -75,12 +76,12 @@ static void mavlink_test_ef_guidance_state(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_ef_guidance_state_pack(system_id, component_id, &msg , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.thrust );
+    mavlink_msg_ef_guidance_state_pack(system_id, component_id, &msg , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.ref_yaw , packet1.thrust );
     mavlink_msg_ef_guidance_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_ef_guidance_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.thrust );
+    mavlink_msg_ef_guidance_state_pack_chan(system_id, component_id, MAVLINK_COMM_0, &msg , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.ref_yaw , packet1.thrust );
     mavlink_msg_ef_guidance_state_decode(&msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 
@@ -93,7 +94,7 @@ static void mavlink_test_ef_guidance_state(uint8_t system_id, uint8_t component_
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
         
         memset(&packet2, 0, sizeof(packet2));
-    mavlink_msg_ef_guidance_state_send(MAVLINK_COMM_1 , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.thrust );
+    mavlink_msg_ef_guidance_state_send(MAVLINK_COMM_1 , packet1.ned_pos_x , packet1.ned_pos_y , packet1.enu_pos_z , packet1.ned_vel_x , packet1.ned_vel_y , packet1.enu_vel_z , packet1.ned_acc_x , packet1.ned_acc_y , packet1.enu_acc_z , packet1.ref_pos_x , packet1.ref_pos_y , packet1.ref_pos_z , packet1.ref_vel_x , packet1.ref_vel_y , packet1.ref_vel_z , packet1.ref_acc_z , packet1.ref_yaw , packet1.thrust );
     mavlink_msg_ef_guidance_state_decode(last_msg, &packet2);
         MAVLINK_ASSERT(memcmp(&packet1, &packet2, sizeof(packet1)) == 0);
 }

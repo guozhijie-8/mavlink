@@ -25,6 +25,7 @@
 			<field type="float" name="ref_vel_y">ref ned velocity.</field>
 			<field type="float" name="ref_vel_z">ref enu velocity.</field>
 			<field type="float" name="ref_acc_z">ref enu acceleration.</field>
+			<field type="float" name="ref_yaw">ref yaw.</field>
 			<field type="float" name="thrust">thrust output.</field>
 		</message>
 	</messages>
