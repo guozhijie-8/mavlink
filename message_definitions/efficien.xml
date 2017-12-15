@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<mavlink>
+	<include>common.xml</include>
+    <include>ardupilotmega.xml</include>
+    <!-- NOTE: If the included file already contains a version tag, remove the version tag here, else uncomment to enable. -->
+	<!--<version>3</version>-->
+	<enums>
+	</enums>
+	<messages>
+		<message id="12000" name="EF_GUIDANCE_STATE">
+			<description>efficien guidance module state</description>
+			<field type="float" name="ned_pos_x">ned position.</field>
+			<field type="float" name="ned_pos_y">ned position.</field>
+			<field type="float" name="enu_pos_z">enu position.</field>
+			<field type="float" name="ned_vel_x">ned position.</field>
+			<field type="float" name="ned_vel_y">ned position.</field>
+			<field type="float" name="enu_vel_z">enu position.</field>
+			<field type="float" name="ned_acc_x">ned position.</field>
+			<field type="float" name="ned_acc_y">ned position.</field>
+			<field type="float" name="enu_acc_z">enu position.</field>
+			<field type="float" name="ref_pos_x">ref ned position.</field>
+			<field type="float" name="ref_pos_y">ref ned position.</field>
+			<field type="float" name="ref_pos_z">ref enu position.</field>
+			<field type="float" name="ref_vel_x">ref ned velocity.</field>
+			<field type="float" name="ref_vel_y">ref ned velocity.</field>
+			<field type="float" name="ref_vel_z">ref enu velocity.</field>
+			<field type="float" name="ref_acc_z">ref enu acceleration.</field>
+			<field type="float" name="thrust">thrust output.</field>
+		</message>
+	</messages>
+</mavlink>
